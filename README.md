@@ -1,20 +1,23 @@
 
 # minGPT
 
-A PyTorch re-implementation of [GPT](https://github.com/openai/gpt-3) training. minGPT tries to be small, clean, interpretable and educational, as most of the currently available ones are a bit sprawling. GPT is not a complicated model and this implementation is appropriately about 300 lines of code, including boilerplate and a totally unnecessary custom causal self-attention module. Anyway, all that's going on is that a sequence of indices goes into a sequence of transformer blocks, and a probability distribution of the next index comes out. The rest of the complexity is just being clever with batching (both across examples and over sequence length) so that training is efficient.
 
-The core minGPT "library" (hah) is two files: `mingpt/model.py` contains the actual Transformer model definition and `mingpt/trainer.py` is (GPT-independent) PyTorch boilerplate that trains the model. The attached Jupyter notebooks then show how the "library" (hah) can be used to train sequence models:
+The core minGPT "library" two files: 
+1. `mingpt/model.py` -> actual Transformer model definition 
+2. `mingpt/trainer.py` -> (GPT-independent) PyTorch boilerplate that trains the model.
 
+<Jupyter notebooks>  
+  :how the "library" (hah) can be used to train sequence models
 - `play_math.ipynb` trains a GPT focused on addition (inspired by the addition section in the GPT-3 paper)
 - `play_char.ipynb` trains a GPT to be a character-level language model on arbitrary text, similar to my older char-rnn but with a transformer instead of an RNN
 - `play_image.ipynb` trains a GPT on (small) images (CIFAR-10), showing that we can model images just as text, as both can be reduced to just a sequence of integers
 - `play_words.ipynb` a BPE version that does not yet exist
 
-With a bpe encoder, distributed training and maybe fp16 this implementation may be able to reproduce GPT-1/GPT-2 results, though I haven't tried $$$. GPT-3 is likely out of reach as my understanding is that it does not fit into GPU memory and requires a more careful model-parallel treatment.
+With a bpe encoder, distributed training and maybe fp16 this implementation may be able to reproduce GPT-1/GPT-2 results,
+GPT-3 is likely out of reach as my understanding is that it does not fit into GPU memory and requires a more careful model-parallel treatment.
 
 ### Example usage
 
-This code is simple enough to just hack inline, not "used", but current API looks something like:
 
 ```python
 
@@ -49,6 +52,7 @@ Code:
 - [openai/gpt-2](https://github.com/openai/gpt-2) has the model but not the training code, and in TensorFlow
 - [openai/image-gpt](https://github.com/openai/image-gpt) has some more modern gpt-3 like modification in its code, good reference as well
 - huggingface/transformers has a [language-modeling example](https://github.com/huggingface/transformers/tree/master/examples/language-modeling). It is full-featured but as a result also somewhat challenging to trace. E.g. some large functions have as much as 90% unused code behind various branching statements that is unused in the default setting of simple language modeling.
+
 
 Papers + some implementation notes:
 
